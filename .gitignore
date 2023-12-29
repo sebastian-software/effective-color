@@ -1,0 +1,8 @@
+# Installed Dependencies
+node_modules/
+
+# Output folders
+dist/
+build/
+public/
+coverage/

@@ -1,0 +1,68 @@
+{
+  "name": "@effective/color",
+  "version": "0.0.1",
+  "description": "Color Palette Generator based on Human Perception",
+  "main": "index.js",
+  "scripts": {
+    "clean:dist": "git clean -fXd",
+    "build": "echo",
+    "prepare": "npm run build",
+    "format": "prettier --write src",
+    "release": "release-it",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "update:latest": "ncu --upgrade --interactive",
+    "update:minor": "ncu --upgrade --interactive --target minor",
+    "update:pnpm": "corepack up"
+  },
+  "keywords": [
+    "color",
+    "delta-e",
+    "human",
+    "perception",
+    "color-palette",
+    "color-scheme",
+    "color-theory",
+    "tailwind",
+    "material-design"
+  ],
+  "author": {
+    "name": "Sebastian Werner",
+    "email": "s.werner@sebastian-software.de",
+    "url": "http://sebastian-software.de/werner"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebastian-software/effective-color.git"
+  },
+  "packageManager": "pnpm@8.13.1+sha256.9e5f62ce5f2b7d4ceb3c2848f41cf0b33032c24d683c7088b53f62b1885fb246",
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.6",
+    "@storybook/addon-interactions": "^7.6.6",
+    "@storybook/addon-links": "^7.6.6",
+    "@storybook/addon-onboarding": "^1.0.10",
+    "@storybook/blocks": "^7.6.6",
+    "@storybook/react": "^7.6.6",
+    "@storybook/react-vite": "^7.6.6",
+    "@storybook/test": "^7.6.6",
+    "cspell": "^8.2.4",
+    "eslint": "^8.56.0",
+    "eslint-plugin-storybook": "^0.6.15",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "npm-check-updates": "^16.14.12",
+    "prettier": "^3.1.1",
+    "prettier-package-json": "^2.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.5",
+    "storybook": "^7.6.6",
+    "typescript": "^5.3.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
+  }
+}

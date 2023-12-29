@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Shared Config",
+
+  // Override rules for ts-node
+  // Via: https://github.com/cypress-io/cypress/issues/26308#issuecomment-1499724602
+  // Otherwise breaks with moduleResolution=bundler
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "moduleResolution": "node"
+    }
+  },
+
+  "compilerOptions": {
+    "outDir": "dist",
+
+    // Recommended:
+    // https://github.com/tsconfig/bases/blob/main/bases/recommended.json
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Create React App:
+    // https://github.com/tsconfig/bases/blob/main/bases/create-react-app.json
+    "module": "esnext",
+    "allowJs": true,
+
+    // To provide backwards compatibility, Node.js allows you to import most CommonJS packages with a default import.
+    // This flag tells TypeScript that it's okay to use import on CommonJS modules.
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+
+    // The new `bundler` value support package.json `exports` and is still tolerant
+    // regarding most conventions used in frontend code.
+    "moduleResolution": "bundler",
+
+    // Sindre Sorhus
+    // https://github.com/sindresorhus/tsconfig
+    "target": "ES2021", // Node.js 16, https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
+    "lib": ["dom", "dom.iterable", "ES2021"],
+    "resolveJsonModule": false, // ESM doesn't yet support JSON modules.
+    "declaration": true,
+    "pretty": true,
+    "newLine": "lf"
+  }
+}
