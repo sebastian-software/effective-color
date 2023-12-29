@@ -7,7 +7,7 @@ import {
   interpolate,
   modeOklab
 } from "culori"
-import type { FC, PropsWithChildren } from "react"
+import { useMemo, type FC, type PropsWithChildren } from "react"
 
 const meta: Meta<FC> = {
   component: () => null
@@ -21,12 +21,11 @@ function BadgeLayout({ children }: PropsWithChildren) {
   return (
     <div
       style={{
-        font: "system-ui",
         display: "flex",
         flexDirection: "row",
 
         flexWrap: "wrap",
-        padding: "0.5rem 1rem"
+        padding: "0.25rem 0.5rem"
       }}
     >
       {children}
@@ -44,16 +43,14 @@ function Badge({ background, text, label }: BadgeProps) {
   return (
     <div
       style={{
-        fontSize: "12px",
+        fontSize: "11px",
+        fontFamily: "system-ui",
         lineHeight: "1.2",
-        // @ts-expect-error textWrap is not in the CSS typings
-        textWrap: "balance",
         padding: "1rem",
-        width: "5rem",
-        height: "5rem",
+        width: "7.5rem",
+        height: "2.5rem",
         backgroundColor: background,
         color: text,
-        textShadow: "rgba(0, 0, 0, 0.1) 0px 1px 1px",
         textAlign: "center",
         justifyContent: "center",
         display: "flex",
@@ -83,9 +80,6 @@ function findNextShade(start: string, end: string, difference = 2) {
   }
 }
 
-const result1 = findNextShade("#000099", "#FFF")
-console.log("NEXT RES:", result1)
-
 function buildShades(start: string, end: string, steps: number) {
   const result = []
   let current = start
@@ -106,74 +100,57 @@ function buildShades(start: string, end: string, steps: number) {
   return result
 }
 
-const blueShades = buildShades("#FFF", "#000099", 8)
-const orangeShades = buildShades("#FFF", "#FE8F11", 8)
-const bordeauxShades = buildShades("#FFF", "oklch(47.35% 0.148 355.76)", 8)
-const greenShades = buildShades("#FFF", "oklch(47.35% 0.111 156.71)", 8)
+interface ColorShapeProps {
+  name: string
+  color: string
+  steps?: number
+}
 
-export function Blue() {
+function ColorShades({ name, color, steps = 8 }: ColorShapeProps) {
+  const shades = useMemo(
+    () => buildShades("#FFF", color, steps),
+    [color, steps]
+  )
+
+  return (
+    <BadgeLayout>
+      <Badge background={color} text="#fff" label={name} />
+      {shades.map((shade, index) => {
+        return (
+          <Badge
+            key={index}
+            background={formatCss(shade)}
+            text={color}
+            label={"#" + index}
+          />
+        )
+      })}
+    </BadgeLayout>
+  )
+}
+
+export function Shades() {
   return (
     <>
-      <BadgeLayout>
-        <Badge background="#000099" text="#fff" label="original" />
-        {blueShades.map((shade, index) => {
-          return (
-            <Badge
-              key={index}
-              background={formatCss(shade)}
-              text="#000099"
-              label={"shade" + index}
-            />
-          )
-        })}
-      </BadgeLayout>
-      <BadgeLayout>
-        <Badge background="#FE8F11" text="#fff" label="original" />
-        {orangeShades.map((shade, index) => {
-          return (
-            <Badge
-              key={index}
-              background={formatCss(shade)}
-              text="#FE8F11"
-              label={"shade" + index}
-            />
-          )
-        })}
-      </BadgeLayout>
-      <BadgeLayout>
-        <Badge
-          background="oklch(47.35% 0.148 355.76)"
-          text="#fff"
-          label="original"
-        />
-        {bordeauxShades.map((shade, index) => {
-          return (
-            <Badge
-              key={index}
-              background={formatCss(shade)}
-              text="oklch(47.35% 0.148 355.76)"
-              label={"shade" + index}
-            />
-          )
-        })}
-      </BadgeLayout>
-      <BadgeLayout>
-        <Badge
-          background="oklch(47.35% 0.111 156.71)"
-          text="#fff"
-          label="original"
-        />
-        {greenShades.map((shade, index) => {
-          return (
-            <Badge
-              key={index}
-              background={formatCss(shade)}
-              text="oklch(47.35% 0.111 156.71)"
-              label={"shade" + index}
-            />
-          )
-        })}
-      </BadgeLayout>
+      {/* Based on colors from https://tailwindcss.com/docs/customizing-colors */}
+      <ColorShades name="tw-neutral-700" color="#404040" />
+      <ColorShades name="tw-red-600" color="#dc2626" />
+      <ColorShades name="tw-orange-600" color="#ea580c" />
+      <ColorShades name="tw-amber-600" color="#d97706" />
+      <ColorShades name="tw-yellow-600" color="#ca8a04" />
+      <ColorShades name="tw-lime-600" color="#65a30d" />
+      <ColorShades name="tw-green-600" color="#16a34a" />
+      <ColorShades name="tw-emerald-600" color="#059669" />
+      <ColorShades name="tw-teal-600" color="#0d9488" />
+      <ColorShades name="tw-cyan-600" color="#0891b2" />
+      <ColorShades name="tw-sky-600" color="#0284c7" />
+      <ColorShades name="tw-blue-600" color="#2563eb" />
+      <ColorShades name="tw-indigo-600" color="#4f46e5" />
+      <ColorShades name="tw-violet-600" color="#7c3aed" />
+      <ColorShades name="tw-purple-600" color="#9333ea" />
+      <ColorShades name="tw-fuchsia-600" color="#c026d3" />
+      <ColorShades name="tw-pink-600" color="#db2777" />
+      <ColorShades name="tw-rose-600" color="#e11d48" />
     </>
   )
 }

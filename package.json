@@ -41,7 +41,6 @@
     "@storybook/addon-essentials": "^7.6.6",
     "@storybook/addon-interactions": "^7.6.6",
     "@storybook/addon-links": "^7.6.6",
-    "@storybook/addon-onboarding": "^1.0.10",
     "@storybook/blocks": "^7.6.6",
     "@storybook/react": "^7.6.6",
     "@storybook/react-vite": "^7.6.6",
@@ -54,11 +53,12 @@
     "npm-check-updates": "^16.14.12",
     "prettier": "^3.1.1",
     "prettier-package-json": "^2.8.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",
     "storybook": "^7.6.6",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "@types/culori": "^2.0.4",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18"
   },
   "eslintConfig": {
     "extends": [
@@ -66,7 +66,8 @@
     ]
   },
   "dependencies": {
-    "@types/culori": "^2.0.4",
-    "culori": "^3.3.0"
+    "culori": "^3.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
