@@ -9,7 +9,7 @@
     "prepare": "npm run build",
     "format": "prettier --write src",
     "release": "release-it",
-    "storybook": "storybook dev -p 6006",
+    "dev": "storybook dev -p 7099",
     "build-storybook": "storybook build",
     "update:latest": "ncu --upgrade --interactive",
     "update:minor": "ncu --upgrade --interactive --target minor",
@@ -64,5 +64,9 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "dependencies": {
+    "@types/culori": "^2.0.4",
+    "culori": "^3.3.0"
   }
 }
