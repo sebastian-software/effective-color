@@ -102,19 +102,17 @@ function buildShades(start: string, end: string, steps: number) {
 
 interface ColorShapeProps {
   name: string
+  to: string
   color: string
   steps?: number
 }
 
-function ColorShades({ name, color, steps = 8 }: ColorShapeProps) {
-  const shades = useMemo(
-    () => buildShades("#FFF", color, steps),
-    [color, steps]
-  )
+function ColorShades({ name, color, to, steps = 8 }: ColorShapeProps) {
+  const shades = useMemo(() => buildShades(to, color, steps), [color, steps])
 
   return (
     <BadgeLayout>
-      <Badge background={color} text="#fff" label={name} />
+      <Badge background={color} text={to} label={name} />
       {shades.map((shade, index) => {
         return (
           <Badge
@@ -129,28 +127,54 @@ function ColorShades({ name, color, steps = 8 }: ColorShapeProps) {
   )
 }
 
-export function Shades() {
+export function LightShades() {
   return (
     <>
       {/* Based on colors from https://tailwindcss.com/docs/customizing-colors */}
-      <ColorShades name="tw-neutral-700" color="#404040" />
-      <ColorShades name="tw-red-600" color="#dc2626" />
-      <ColorShades name="tw-orange-600" color="#ea580c" />
-      <ColorShades name="tw-amber-600" color="#d97706" />
-      <ColorShades name="tw-yellow-600" color="#ca8a04" />
-      <ColorShades name="tw-lime-600" color="#65a30d" />
-      <ColorShades name="tw-green-600" color="#16a34a" />
-      <ColorShades name="tw-emerald-600" color="#059669" />
-      <ColorShades name="tw-teal-600" color="#0d9488" />
-      <ColorShades name="tw-cyan-600" color="#0891b2" />
-      <ColorShades name="tw-sky-600" color="#0284c7" />
-      <ColorShades name="tw-blue-600" color="#2563eb" />
-      <ColorShades name="tw-indigo-600" color="#4f46e5" />
-      <ColorShades name="tw-violet-600" color="#7c3aed" />
-      <ColorShades name="tw-purple-600" color="#9333ea" />
-      <ColorShades name="tw-fuchsia-600" color="#c026d3" />
-      <ColorShades name="tw-pink-600" color="#db2777" />
-      <ColorShades name="tw-rose-600" color="#e11d48" />
+      <ColorShades name="tw-neutral-700" color="#404040" to="#fff" />
+      <ColorShades name="tw-red-600" color="#dc2626" to="#fff" />
+      <ColorShades name="tw-orange-600" color="#ea580c" to="#fff" />
+      <ColorShades name="tw-amber-600" color="#d97706" to="#fff" />
+      <ColorShades name="tw-yellow-600" color="#ca8a04" to="#fff" />
+      <ColorShades name="tw-lime-600" color="#65a30d" to="#fff" />
+      <ColorShades name="tw-green-600" color="#16a34a" to="#fff" />
+      <ColorShades name="tw-emerald-600" color="#059669" to="#fff" />
+      <ColorShades name="tw-teal-600" color="#0d9488" to="#fff" />
+      <ColorShades name="tw-cyan-600" color="#0891b2" to="#fff" />
+      <ColorShades name="tw-sky-600" color="#0284c7" to="#fff" />
+      <ColorShades name="tw-blue-600" color="#2563eb" to="#fff" />
+      <ColorShades name="tw-indigo-600" color="#4f46e5" to="#fff" />
+      <ColorShades name="tw-violet-600" color="#7c3aed" to="#fff" />
+      <ColorShades name="tw-purple-600" color="#9333ea" to="#fff" />
+      <ColorShades name="tw-fuchsia-600" color="#c026d3" to="#fff" />
+      <ColorShades name="tw-pink-600" color="#db2777" to="#fff" />
+      <ColorShades name="tw-rose-600" color="#e11d48" to="#fff" />
+    </>
+  )
+}
+
+export function DarkShades() {
+  return (
+    <>
+      {/* Based on colors from https://tailwindcss.com/docs/customizing-colors */}
+      <ColorShades name="tw-neutral-700" color="#404040" to="#000" />
+      <ColorShades name="tw-red-600" color="#dc2626" to="#000" />
+      <ColorShades name="tw-orange-600" color="#ea580c" to="#000" />
+      <ColorShades name="tw-amber-600" color="#d97706" to="#000" />
+      <ColorShades name="tw-yellow-600" color="#ca8a04" to="#000" />
+      <ColorShades name="tw-lime-600" color="#65a30d" to="#000" />
+      <ColorShades name="tw-green-600" color="#16a34a" to="#000" />
+      <ColorShades name="tw-emerald-600" color="#059669" to="#000" />
+      <ColorShades name="tw-teal-600" color="#0d9488" to="#000" />
+      <ColorShades name="tw-cyan-600" color="#0891b2" to="#000" />
+      <ColorShades name="tw-sky-600" color="#0284c7" to="#000" />
+      <ColorShades name="tw-blue-600" color="#2563eb" to="#000" />
+      <ColorShades name="tw-indigo-600" color="#4f46e5" to="#000" />
+      <ColorShades name="tw-violet-600" color="#7c3aed" to="#000" />
+      <ColorShades name="tw-purple-600" color="#9333ea" to="#000" />
+      <ColorShades name="tw-fuchsia-600" color="#c026d3" to="#000" />
+      <ColorShades name="tw-pink-600" color="#db2777" to="#000" />
+      <ColorShades name="tw-rose-600" color="#e11d48" to="#000" />
     </>
   )
 }
