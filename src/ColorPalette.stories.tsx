@@ -26,12 +26,9 @@ function BadgeLayout({ children }: PropsWithChildren) {
   return (
     <div
       style={{
-        background: "black",
         display: "flex",
         flexDirection: "row",
-
-        flexWrap: "wrap",
-        padding: "0.25rem 0.5rem"
+        flexWrap: "wrap"
       }}
     >
       {children}
@@ -54,7 +51,7 @@ function Badge({ background, text, label }: BadgeProps) {
         lineHeight: "1.2",
         padding: "1rem",
         width: "7.5rem",
-        height: "2.5rem",
+        height: "1.5rem",
         backgroundColor: background,
         color: text,
         textAlign: "center",
@@ -95,7 +92,11 @@ function buildShades(
   const result = []
   let current = start
   for (let i = 0; i < 100; i++) {
-    const next = findNextShade(current, end, difference)
+    const next = findNextShade(
+      current,
+      end,
+      result.length === 0 ? 1 : difference
+    )
     if (next) {
       result.push(next)
       current = next
@@ -128,7 +129,7 @@ function ColorShades({ name, color, to, steps, difference }: ColorShapeProps) {
   return (
     <BadgeLayout>
       <Badge background={color} text={to} label={name} />
-      <Badge background={to} text="#fff" label="to" />
+      <Badge background={to} text={color} label="to" />
       {shades.map((shade, index) => {
         return (
           <Badge
@@ -146,7 +147,7 @@ function ColorShades({ name, color, to, steps, difference }: ColorShapeProps) {
 export function LightShades() {
   const config = {
     to: "#fff",
-    difference: 2,
+    difference: 3,
     steps: 7
   }
 
@@ -180,7 +181,7 @@ export function DarkShades() {
     // "to" is not black but the first color cielab reports as visually
     // different to black (difference=1)
     to: "#060606",
-    difference: 2,
+    difference: 3,
     steps: 7
   }
   return (
