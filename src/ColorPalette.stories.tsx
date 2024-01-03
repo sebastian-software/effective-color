@@ -1,13 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import bezierEasing from "bezier-easing"
-import {
-  converter,
-  differenceCiede2000,
-  formatCss,
-  formatHex,
-  interpolate,
-  modeOklab
-} from "culori"
+import { differenceCiede2000, formatCss, formatHex, interpolate } from "culori"
 import { useMemo, type FC, type PropsWithChildren } from "react"
 import "./global.css"
 
@@ -28,7 +20,8 @@ function BadgeLayout({ children }: PropsWithChildren) {
       style={{
         display: "flex",
         flexDirection: "row",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
+        marginBottom: "1px"
       }}
     >
       {children}
@@ -65,9 +58,43 @@ function Badge({ background, text, label }: BadgeProps) {
   )
 }
 
+function calculateLightnessCompensation(
+  lightness: number,
+  initialCompensation: number,
+  decayRate: number
+): number {
+  // Ensure lightness is within the range [0, 1]
+  if (lightness < 0 || lightness > 1) {
+    throw new Error("Lightness must be between 0 and 1")
+  }
+
+  // Calculate the compensation using the exponential function
+  const compensation = initialCompensation * Math.exp(-decayRate * lightness)
+
+  return compensation
+}
+
+// DeltaE 2000 is based on color differences in the L* C* H* color space.
+// It is not an application-specific calculation and is commonly used in
+// video calibration. Unlike DeltaE 1976 and 1994, it does take into account
+// the human eye’s perceptual sensitivity at different colors.
 const differ = differenceCiede2000()
 
-function findNextShade(start: string, end: string, difference: number) {
+interface ShadeConfig {
+  steps: number
+  difference: number
+  minLightness: number
+  maxLightness: number
+}
+
+const defaultShadeConfig: ShadeConfig = {
+  steps: 7,
+  difference: 2,
+  minLightness: 0.1,
+  maxLightness: 0.99
+}
+
+function findNextShade(start: string, end: string, config: ShadeConfig) {
   if (differ(start, end) < 0.1) {
     return
   }
@@ -75,9 +102,16 @@ function findNextShade(start: string, end: string, difference: number) {
   const mixer = interpolate([start, end], "oklab")
 
   let next
-  for (let change = 0.001; change < 1; change += 0.001) {
+  let tries = 0
+  for (let change = 0.0001; change < 1; change += 0.0001) {
     next = mixer(change)
-    if (differ(start, next) > difference) {
+    tries++
+
+    if (
+      differ(start, next) > config.difference &&
+      next.l >= config.minLightness &&
+      next.l <= config.maxLightness
+    ) {
       return next
     }
   }
@@ -86,17 +120,12 @@ function findNextShade(start: string, end: string, difference: number) {
 function buildShades(
   start: string,
   end: string,
-  steps: number,
-  difference: number
+  config: ShadeConfig = defaultShadeConfig
 ) {
   const result = []
   let current = start
   for (let i = 0; i < 100; i++) {
-    const next = findNextShade(
-      current,
-      end,
-      result.length === 0 ? 1 : difference
-    )
+    const next = findNextShade(current, end, config)
     if (next) {
       result.push(next)
       current = next
@@ -104,7 +133,7 @@ function buildShades(
       break
     }
 
-    if (result.length >= steps) {
+    if (result.length >= config.steps) {
       break
     }
   }
@@ -116,14 +145,13 @@ interface ColorShapeProps {
   name: string
   to: string
   color: string
-  steps: number
-  difference: number
+  config?: ShadeConfig
 }
 
-function ColorShades({ name, color, to, steps, difference }: ColorShapeProps) {
+function ColorShades({ name, color, to, config }: ColorShapeProps) {
   const shades = useMemo(
-    () => buildShades(to, color, steps, difference),
-    [color, steps]
+    () => buildShades(to, color, config),
+    [to, color, config]
   )
 
   return (
@@ -144,67 +172,55 @@ function ColorShades({ name, color, to, steps, difference }: ColorShapeProps) {
   )
 }
 
-export function LightShades() {
-  const config = {
-    to: "#fff",
-    difference: 3,
-    steps: 7
-  }
+const tailwind = {
+  slate: "#64748b",
+  gray: "#6b7280",
+  stone: "#78716c",
+  red: "#dc2626",
+  orange: "#f97316",
+  amber: "#d97706",
+  yellow: "#facc15",
+  lime: "#a3e635",
+  green: "#16a34a",
+  emerald: "#059669",
+  teal: "#0d9488",
+  cyan: "#0891b2",
+  sky: "#0ea5e9",
+  blue: "#1e40af",
+  indigo: "#4f46e5",
+  violet: "#7c3aed",
+  purple: "#7e22ce",
+  fuchsia: "#c026d3",
+  pink: "#ec4899",
+  rose: "#9f1239"
+}
 
-  return (
-    <>
-      {/* Based on colors from https://tailwindcss.com/docs/customizing-colors */}
-      <ColorShades name="tw-neutral-600" color="#525252" {...config} />
-      <ColorShades name="tw-red-600" color="#dc2626" {...config} />
-      <ColorShades name="tw-orange-600" color="#ea580c" {...config} />
-      <ColorShades name="tw-amber-600" color="#d97706" {...config} />
-      <ColorShades name="tw-yellow-600" color="#ca8a04" {...config} />
-      <ColorShades name="tw-lime-600" color="#65a30d" {...config} />
-      <ColorShades name="tw-green-600" color="#16a34a" {...config} />
-      <ColorShades name="tw-emerald-600" color="#059669" {...config} />
-      <ColorShades name="tw-teal-600" color="#0d9488" {...config} />
-      <ColorShades name="tw-cyan-600" color="#0891b2" {...config} />
-      <ColorShades name="tw-sky-600" color="#0284c7" {...config} />
-      <ColorShades name="tw-blue-600" color="#2563eb" {...config} />
-      <ColorShades name="tw-indigo-600" color="#4f46e5" {...config} />
-      <ColorShades name="tw-violet-600" color="#7c3aed" {...config} />
-      <ColorShades name="tw-purple-600" color="#9333ea" {...config} />
-      <ColorShades name="tw-fuchsia-600" color="#c026d3" {...config} />
-      <ColorShades name="tw-pink-600" color="#db2777" {...config} />
-      <ColorShades name="tw-rose-600" color="#e11d48" {...config} />
-    </>
-  )
+export function LightShades() {
+  return Object.keys(tailwind).map((key) => {
+    const color = tailwind[key as keyof typeof tailwind]
+
+    return (
+      <ColorShades
+        key={key}
+        name={key}
+        color={formatCss(color) ?? ""}
+        to="#fff"
+      />
+    )
+  })
 }
 
 export function DarkShades() {
-  const config = {
-    // "to" is not black but the first color cielab reports as visually
-    // different to black (difference=1)
-    to: "#060606",
-    difference: 3,
-    steps: 7
-  }
-  return (
-    <>
-      {/* Based on colors from https://tailwindcss.com/docs/customizing-colors */}
-      <ColorShades name="tw-neutral-600" color="#525252" {...config} />
-      <ColorShades name="tw-red-600" color="#dc2626" {...config} />
-      <ColorShades name="tw-orange-600" color="#ea580c" {...config} />
-      <ColorShades name="tw-amber-600" color="#d97706" {...config} />
-      <ColorShades name="tw-yellow-600" color="#ca8a04" {...config} />
-      <ColorShades name="tw-lime-600" color="#65a30d" {...config} />
-      <ColorShades name="tw-green-600" color="#16a34a" {...config} />
-      <ColorShades name="tw-emerald-600" color="#059669" {...config} />
-      <ColorShades name="tw-teal-600" color="#0d9488" {...config} />
-      <ColorShades name="tw-cyan-600" color="#0891b2" {...config} />
-      <ColorShades name="tw-sky-600" color="#0284c7" {...config} />
-      <ColorShades name="tw-blue-600" color="#2563eb" {...config} />
-      <ColorShades name="tw-indigo-600" color="#4f46e5" {...config} />
-      <ColorShades name="tw-violet-600" color="#7c3aed" {...config} />
-      <ColorShades name="tw-purple-600" color="#9333ea" {...config} />
-      <ColorShades name="tw-fuchsia-600" color="#c026d3" {...config} />
-      <ColorShades name="tw-pink-600" color="#db2777" {...config} />
-      <ColorShades name="tw-rose-600" color="#e11d48" {...config} />
-    </>
-  )
+  return Object.keys(tailwind).map((key) => {
+    const color = tailwind[key as keyof typeof tailwind]
+
+    return (
+      <ColorShades
+        key={key}
+        name={key}
+        color={formatCss(color) ?? ""}
+        to="#000"
+      />
+    )
+  })
 }
