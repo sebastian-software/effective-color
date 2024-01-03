@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { differenceCiede2000, formatCss, formatHex, interpolate } from "culori"
+import {
+  Oklab,
+  differenceCiede2000,
+  formatCss,
+  formatHex,
+  interpolate
+} from "culori"
 import { useMemo, type FC, type PropsWithChildren } from "react"
 import "./global.css"
 
@@ -94,7 +100,11 @@ const defaultShadeConfig: ShadeConfig = {
   maxLightness: 0.99
 }
 
-function findNextShade(start: string, end: string, config: ShadeConfig) {
+function findNextShade(
+  start: string | Oklab,
+  end: string,
+  config: ShadeConfig
+) {
   if (differ(start, end) < 0.1) {
     return
   }
@@ -123,7 +133,7 @@ function buildShades(
   config: ShadeConfig = defaultShadeConfig
 ) {
   const result = []
-  let current = start
+  let current: Oklab | string = start
   for (let i = 0; i < 100; i++) {
     const next = findNextShade(current, end, config)
     if (next) {
