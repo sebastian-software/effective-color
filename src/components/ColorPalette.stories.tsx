@@ -22,13 +22,9 @@ interface ColorShapeProps {
 function ColorShades({ name, end, start, config }: ColorShapeProps) {
   return (
     <BadgeLayout>
-      <Badge backgroundColor={end} labelColor={start} label={name} />
+      <Badge backgroundColor={end ?? "white"} label={name} />
       {buildShades(start, end, config).map((shade, index) => (
-        <Badge
-          key={index}
-          backgroundColor={formatHex(shade)}
-          labelColor={end}
-        />
+        <Badge key={index} backgroundColor={formatHex(shade)} />
       ))}
     </BadgeLayout>
   )
@@ -50,7 +46,6 @@ function ColorShadesFromPalette({
     .sort()
     .map((key) => {
       const color = palette[key as keyof typeof palette]
-
       return <ColorShades key={key} name={key} end={color} start={start} />
     })
 }
@@ -69,4 +64,8 @@ export function LightShadesPantone() {
 
 export function DarkShadesPantone() {
   return <ColorShadesFromPalette palette={pantone} start="#000" />
+}
+
+export function RelatedShadesPantone() {
+  return <ColorShadesFromPalette palette={pantone} />
 }

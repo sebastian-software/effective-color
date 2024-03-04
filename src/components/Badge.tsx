@@ -1,9 +1,17 @@
+import { converter } from "culori"
+
 interface BadgeProps {
   backgroundColor: string
-  labelColor: string
   label?: string
 }
-export function Badge({ backgroundColor, labelColor, label }: BadgeProps) {
+
+const lab = converter("lab")
+
+export function Badge({ backgroundColor, label }: BadgeProps) {
+  const parsedColor = lab(backgroundColor)
+  const labelColor =
+    label && parsedColor ? (parsedColor.l > 65 ? "black" : "white") : ""
+
   return (
     <div
       style={{
