@@ -6,7 +6,7 @@ import { ShadeConfig, buildShades } from "../engine"
 import { Badge } from "./Badge"
 import { BadgeLayout } from "./BadgeLayout"
 
-import "./global.css"
+import "./ColorPalette.css"
 
 const meta: Meta<FC> = {
   component: () => null,

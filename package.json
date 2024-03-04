@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean:dist": "git clean -fXd",
-    "build": "tsc",
+    "build": "rimraf dist && tsc --project tsconfig.build.json",
     "prepare": "npm run build",
     "format": "prettier --write src",
     "release": "release-it",
@@ -26,6 +26,9 @@
     "tailwind",
     "material-design"
   ],
+  "files": [
+    "dist"
+  ],
   "author": {
     "name": "Sebastian Werner",
     "email": "s.werner@sebastian-software.de",
@@ -45,22 +48,22 @@
     "@storybook/react": "^7.6.17",
     "@storybook/react-vite": "^7.6.17",
     "@storybook/test": "^7.6.17",
+    "@types/culori": "^2.1.0",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
     "cspell": "^8.5.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "npm-check-updates": "^16.14.15",
     "prettier": "^3.2.5",
     "prettier-package-json": "^2.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",
     "storybook": "^7.6.17",
-    "typescript": "^5.3.3",
-    "@types/culori": "^2.1.0",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
-    "culori": "^4.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "culori": "^4.0.1"
   }
 }
