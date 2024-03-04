@@ -95,7 +95,7 @@ interface ShadeConfig {
 
 const defaultShadeConfig: ShadeConfig = {
   steps: 20,
-  difference: 2,
+  difference: 1,
   minLightness: 0.1,
   maxLightness: 0.99
 }
