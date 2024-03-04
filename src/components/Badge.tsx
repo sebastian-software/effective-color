@@ -19,7 +19,7 @@ export function Badge({ backgroundColor, label }: BadgeProps) {
         fontFamily: "system-ui",
         lineHeight: "1.2",
         padding: "1rem",
-        width: "3rem",
+        width: "5rem",
         height: "1.5rem",
         backgroundColor,
         color: labelColor,

@@ -42,3 +42,17 @@ export const pantone: ColorPalette = {
   "2011": "#d94f70", // "Honeysuckle"
   "2010": "#45b8ac" // "Turquoise"
 }
+
+export const apple: ColorPalette = {
+  softMint: "#e1eae1",
+  sunshine: "#f6c869",
+  lightBlue: "#95aabc",
+  stormBlue: "#4d5460",
+  clay: "#aaa39a",
+  pink: "#f091a7",
+  orangeSorbet: "#f3b28c",
+  cypress: "#7f8a7f",
+  winterBlue: "#a8bcd5",
+  guava: "#ee8580",
+  lightPink: "#fbede9"
+}

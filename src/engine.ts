@@ -20,7 +20,7 @@ export interface ShadeConfig {
 }
 
 const defaultShadeConfig: ShadeConfig = {
-  steps: 15,
+  steps: 5,
   difference: 2,
   compensation: 5
 }
@@ -71,6 +71,52 @@ export function buildShades(
       break
     }
   }
+
+  return result
+}
+
+export type ColorSpectrum = Record<string, Oklab | string>
+
+export function buildSpectrum(
+  start: string,
+  config: ShadeConfig = defaultShadeConfig
+): ColorSpectrum {
+  const lighter = buildShades(start, "#000", config)
+  const darker = buildShades(start, "#fff", config)
+
+  const table: ColorSpectrum = {}
+  lighter.forEach((color: Oklab, index: number) => {
+    table[`-${index + 1}`] = color
+  })
+  table["0"] = start
+  darker.forEach((color: Oklab, index: number) => {
+    table[`+${index + 1}`] = color
+  })
+
+  return table
+}
+
+export type SpectrumEntry = {
+  id: string
+  value: string | Oklab
+}
+
+export type SpectrumList = SpectrumEntry[]
+
+function spectrumIdComparator(a: string, b: string) {
+  const aNum = parseInt(a, 10)
+  const bNum = parseInt(b, 10)
+
+  return aNum - bNum
+}
+
+export function spectrumToList(spectrum: ColorSpectrum): SpectrumList {
+  const result: SpectrumList = []
+  Object.keys(spectrum)
+    .sort(spectrumIdComparator)
+    .forEach((id) => {
+      result.push({ id, value: spectrum[id] })
+    })
 
   return result
 }

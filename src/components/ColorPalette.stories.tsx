@@ -1,8 +1,14 @@
 import type { Meta } from "@storybook/react"
 import { formatHex } from "culori"
 import { type FC } from "react"
-import { ColorPalette, pantone, tailwind } from "../palettes"
-import { ShadeConfig, buildShades } from "../engine"
+import { ColorPalette, apple, pantone, tailwind } from "../palettes"
+import {
+  ShadeConfig,
+  SpectrumEntry,
+  buildShades,
+  buildSpectrum,
+  spectrumToList
+} from "../engine"
 import { Badge } from "./Badge"
 import { BadgeLayout } from "./BadgeLayout"
 
@@ -37,25 +43,12 @@ interface ColorSpectrumProps {
 }
 
 function ColorSpectrum({ name, start, config }: ColorSpectrumProps) {
-  const lighter = buildShades(start, "#000", config).reverse()
-  const darker = buildShades(start, "#fff", config)
+  const spectrum = spectrumToList(buildSpectrum(start, config))
 
   return (
     <BadgeLayout>
-      {lighter.map((shade, index) => (
-        <Badge
-          key={index}
-          backgroundColor={formatHex(shade)}
-          label={`-${lighter.length - index}`}
-        />
-      ))}
-      <Badge backgroundColor={start} label={name} />
-      {darker.map((shade, index) => (
-        <Badge
-          key={index}
-          backgroundColor={formatHex(shade)}
-          label={`+${index + 1}`}
-        />
+      {spectrum.map(({ id, value }: SpectrumEntry) => (
+        <Badge key={id} backgroundColor={formatHex(value) ?? ""} label={id} />
       ))}
     </BadgeLayout>
   )
@@ -101,10 +94,22 @@ export function DarkShadesPantone() {
   return <ColorShadesFromPalette palette={pantone} start="#000" />
 }
 
+export function LightShadesApple() {
+  return <ColorShadesFromPalette palette={apple} start="#fff" />
+}
+
+export function DarkShadesApple() {
+  return <ColorShadesFromPalette palette={apple} start="#000" />
+}
+
 export function RelatedShadesTailwind() {
   return <ColorShadesFromPalette palette={tailwind} />
 }
 
 export function RelatedShadesPantone() {
   return <ColorShadesFromPalette palette={pantone} />
+}
+
+export function RelatedShadesApple() {
+  return <ColorShadesFromPalette palette={apple} />
 }
