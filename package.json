@@ -29,6 +29,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": {
     "name": "Sebastian Werner",
     "email": "s.werner@sebastian-software.de",
