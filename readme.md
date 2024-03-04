@@ -24,16 +24,16 @@ npm install @effective/color
 
 ### `buildShades()`
 
-The `buildShades` function generates an array of color shades between two specified colors in the Oklab color space. This function allows for the creation of smooth gradients or transitions from one color to another, which can be particularly useful in UI design, data visualization, or any application where a natural progression of colors is needed.
+The `buildShades` function generates an array of color shades between two specified colors in the Oklab color space. This function allows for the creation of smooth color stops from one color to another, which is primary meant for very light and very dark shades for one base color.
 
 #### Parameters:
 
 - **start**: `string` - The starting color in any CSS-compatible format.
 - **end**: `string` - The ending color in any CSS-compatible format.
 - **config**: `ShadeConfig` (optional) - An object specifying the configuration for shade generation, including:
-  - **steps**: `number` - The number of color shades to generate, including the start and end colors.
+  - **steps**: `number` - The number of color shades to generate
   - **difference**: `number` - The perceptual difference between consecutive shades. A higher value results in more distinct shades.
-  - **compensation**: `number` - A factor to adjust the progression curve of the color transition, allowing for more nuanced control over the gradient.
+  - **compensation**: `number` - A factor to adjust the progression curve of the color transition for very dark colors, allowing for more nuanced control over the result.
 
 #### Returns:
 
@@ -79,4 +79,4 @@ The `spectrumToList` function converts a `ColorSpectrum` object into a list form
 
 <img src="https://cdn.rawgit.com/sebastian-software/sebastian-software-brand/0d4ec9d6/sebastiansoftware-en.svg" alt="Logo of Sebastian Software GmbH, Mainz, Germany" width="460" height="160"/>
 
-Copyright 2023-2024<br/>[Sebastian Software GmbH](https://www.sebastian-software.de)
+Copyright 2024<br/>[Sebastian Software GmbH](https://www.sebastian-software.de)
