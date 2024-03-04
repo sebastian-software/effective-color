@@ -30,6 +30,31 @@ function ColorShades({ name, end, start, config }: ColorShapeProps) {
   )
 }
 
+function ColorSpectrum({ name, start, config }: ColorShapeProps) {
+  const lighter = buildShades(start, "#000", config).reverse()
+  const darker = buildShades(start, "#fff", config)
+
+  return (
+    <BadgeLayout>
+      {lighter.map((shade, index) => (
+        <Badge
+          key={index}
+          backgroundColor={formatHex(shade)}
+          label={`-${lighter.length - index}`}
+        />
+      ))}
+      <Badge backgroundColor={start} label={name} />
+      {darker.map((shade, index) => (
+        <Badge
+          key={index}
+          backgroundColor={formatHex(shade)}
+          label={`+${index + 1}`}
+        />
+      ))}
+    </BadgeLayout>
+  )
+}
+
 export interface ColorShadesFromPaletteProps {
   palette: ColorPalette
   start: string
@@ -46,7 +71,11 @@ function ColorShadesFromPalette({
     .sort()
     .map((key) => {
       const color = palette[key as keyof typeof palette]
-      return <ColorShades key={key} name={key} end={color} start={start} />
+      if (start == null) {
+        return <ColorSpectrum key={key} name={key} start={color} />
+      } else {
+        return <ColorShades key={key} name={key} end={color} start={start} />
+      }
     })
 }
 
