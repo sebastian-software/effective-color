@@ -7,7 +7,7 @@ export function BadgeLayout({ children }: PropsWithChildren) {
         display: "flex",
         flexDirection: "row",
         flexWrap: "nowrap",
-        marginBottom: "1px"
+        marginBottom: "1rem"
       }}
     >
       {children}

@@ -6,13 +6,8 @@ import { ShadeConfig, buildShades } from "../engine"
 import { Badge } from "./Badge"
 import { BadgeLayout } from "./BadgeLayout"
 
-import "./ColorPalette.css"
-
 const meta: Meta<FC> = {
-  component: () => null,
-  parameters: {
-    layout: "fullscreen"
-  }
+  component: () => null
 }
 
 export default meta
@@ -53,6 +48,9 @@ function ColorShadesFromPalette({
   palette,
   start
 }: ColorShadesFromPaletteProps) {
+  // Dynamically set the background color of the storybook preview
+  document.body.style.backgroundColor = start
+
   return Object.keys(palette)
     .sort()
     .map((key) => {
