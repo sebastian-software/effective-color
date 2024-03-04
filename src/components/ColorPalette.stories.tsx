@@ -19,12 +19,7 @@ interface ColorShapeProps {
   config?: ShadeConfig
 }
 
-function ColorShades({
-  name,
-  end: end,
-  start: start,
-  config
-}: ColorShapeProps) {
+function ColorShades({ name, end, start, config }: ColorShapeProps) {
   return (
     <BadgeLayout>
       <Badge backgroundColor={end} labelColor={start} label={name} />
@@ -49,7 +44,7 @@ function ColorShadesFromPalette({
   start
 }: ColorShadesFromPaletteProps) {
   // Dynamically set the background color of the storybook preview
-  document.body.style.backgroundColor = start
+  document.body.style.backgroundColor = start || "#fff"
 
   return Object.keys(palette)
     .sort()
@@ -75,4 +70,3 @@ export function LightShadesPantone() {
 export function DarkShadesPantone() {
   return <ColorShadesFromPalette palette={pantone} start="#000" />
 }
-1
