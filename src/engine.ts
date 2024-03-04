@@ -1,3 +1,5 @@
+import { Oklab, differenceCie94, interpolate } from "culori"
+
 // Choice of CIEDE94 for Color Palette Generation:
 // We've opted for the CIEDE94 color difference formula for generating our color palettes
 // due to its simpler approach to calculating color differences. While CIEDE2000 offers
@@ -8,20 +10,19 @@
 // steps across both chroma-rich and grey-ish colors. This aligns better with our goal of
 // creating aesthetically pleasing and evenly spaced color sets, making CIEDE94 more suited
 // to our application's needs. The decision reflects a balance between perceptual accuracy
-
-import { Oklab, differenceCie94, interpolate } from "culori"
-
 // and visual harmony, prioritizing the latter for our specific visual design objectives.
 const differ = differenceCie94()
 
 export interface ShadeConfig {
   steps: number
   difference: number
+  compensation: number
 }
 
 const defaultShadeConfig: ShadeConfig = {
   steps: 15,
-  difference: 2
+  difference: 2,
+  compensation: 5
 }
 
 function findNextShade(
@@ -36,23 +37,17 @@ function findNextShade(
   const mixer = interpolate([start, end], "oklab")
 
   let next
-  let tries = 0
   for (let change = 0.001; change < 1; change += 0.001) {
     next = mixer(change)
-    tries++
 
     const diff = differ(start, next)
-    const reqDiff = config.difference + calculateCompensationFactor(next.l)
+    const minDiff =
+      config.difference + Math.pow(config.compensation, 1 - next.l) - 1
 
-    if (diff > reqDiff) {
+    if (diff >= minDiff) {
       return next
     }
   }
-}
-
-function calculateCompensationFactor(lightness: number): number {
-  const base = 5
-  return Math.pow(base, 1 - lightness) - 1
 }
 
 export function buildShades(
@@ -62,6 +57,7 @@ export function buildShades(
 ) {
   const result = []
   let current: Oklab | string = start
+
   for (let i = 0; i < 100; i++) {
     const next = findNextShade(current, end, config)
     if (next) {
