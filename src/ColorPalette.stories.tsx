@@ -1,11 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import {
-  Oklab,
-  differenceCiede2000,
-  formatCss,
-  formatHex,
-  interpolate
-} from "culori"
+import { Oklab, differenceCie94, formatHex, interpolate } from "culori"
 import { useMemo, type FC, type PropsWithChildren } from "react"
 import "./global.css"
 
@@ -26,7 +20,7 @@ function BadgeLayout({ children }: PropsWithChildren) {
       style={{
         display: "flex",
         flexDirection: "row",
-        flexWrap: "wrap",
+        flexWrap: "nowrap",
         marginBottom: "1px"
       }}
     >
@@ -56,7 +50,8 @@ function Badge({ background, text, label }: BadgeProps) {
         textAlign: "center",
         justifyContent: "center",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        flexShrink: 0
       }}
     >
       {label}
@@ -64,27 +59,18 @@ function Badge({ background, text, label }: BadgeProps) {
   )
 }
 
-function calculateLightnessCompensation(
-  lightness: number,
-  initialCompensation: number,
-  decayRate: number
-): number {
-  // Ensure lightness is within the range [0, 1]
-  if (lightness < 0 || lightness > 1) {
-    throw new Error("Lightness must be between 0 and 1")
-  }
-
-  // Calculate the compensation using the exponential function
-  const compensation = initialCompensation * Math.exp(-decayRate * lightness)
-
-  return compensation
-}
-
-// DeltaE 2000 is based on color differences in the L* C* H* color space.
-// It is not an application-specific calculation and is commonly used in
-// video calibration. Unlike DeltaE 1976 and 1994, it does take into account
-// the human eye’s perceptual sensitivity at different colors.
-const differ = differenceCiede2000()
+// Choice of CIEDE94 for Color Palette Generation:
+// We've opted for the CIEDE94 color difference formula for generating our color palettes
+// due to its simpler approach to calculating color differences. While CIEDE2000 offers
+// enhanced accuracy in modeling human visual perception, especially for colors with low
+// chroma, it can result in larger perceived steps between such colors, impacting the
+// harmonious transition within our palettes. CIEDE94, with its less complex handling of
+// chroma, hue, and lightness differences, provides a more uniform distribution of color
+// steps across both chroma-rich and grey-ish colors. This aligns better with our goal of
+// creating aesthetically pleasing and evenly spaced color sets, making CIEDE94 more suited
+// to our application's needs. The decision reflects a balance between perceptual accuracy
+// and visual harmony, prioritizing the latter for our specific visual design objectives.
+const differ = differenceCie94()
 
 interface ShadeConfig {
   steps: number
@@ -92,8 +78,8 @@ interface ShadeConfig {
 }
 
 const defaultShadeConfig: ShadeConfig = {
-  steps: 20,
-  difference: 1
+  steps: 15,
+  difference: 2
 }
 
 function findNextShade(
@@ -109,14 +95,22 @@ function findNextShade(
 
   let next
   let tries = 0
-  for (let change = 0.0001; change < 1; change += 0.0001) {
+  for (let change = 0.001; change < 1; change += 0.001) {
     next = mixer(change)
     tries++
 
-    if (differ(start, next) > config.difference) {
+    const diff = differ(start, next)
+    const reqDiff = config.difference + calculateCompensationFactor(next.l)
+
+    if (diff > reqDiff) {
       return next
     }
   }
+}
+
+function calculateCompensationFactor(lightness: number): number {
+  const base = 5
+  return Math.pow(base, 1 - lightness) - 1
 }
 
 function buildShades(
@@ -159,16 +153,8 @@ function ColorShades({ name, color, to, config }: ColorShapeProps) {
   return (
     <BadgeLayout>
       <Badge background={color} text={to} label={name} />
-      <Badge background={to} text={color} label="to" />
       {shades.map((shade, index) => {
-        return (
-          <Badge
-            key={index}
-            background={formatHex(shade)}
-            text={color}
-            label={"#" + index}
-          />
-        )
+        return <Badge key={index} background={formatHex(shade)} text={color} />
       })}
     </BadgeLayout>
   )
@@ -198,7 +184,7 @@ const tailwind = {
 }
 
 const pantone = {
-  "2024": "ffbe98", // Peach Fuzz
+  "2024": "#ffbe98", // Peach Fuzz
   "2023": "#BB2649", // Viva Magenta
   "2022": "#6667ab", // "Very Peri"
   "2021a": "#F9E547", // "Iluminating"
@@ -223,14 +209,7 @@ export function LightShadesTailwind() {
     .map((key) => {
       const color = tailwind[key as keyof typeof tailwind]
 
-      return (
-        <ColorShades
-          key={key}
-          name={key}
-          color={formatCss(color) ?? ""}
-          to="#fff"
-        />
-      )
+      return <ColorShades key={key} name={key} color={color} to="#fff" />
     })
 }
 
@@ -240,14 +219,7 @@ export function DarkShadesTailwind() {
     .map((key) => {
       const color = tailwind[key as keyof typeof tailwind]
 
-      return (
-        <ColorShades
-          key={key}
-          name={key}
-          color={formatCss(color) ?? ""}
-          to="#000"
-        />
-      )
+      return <ColorShades key={key} name={key} color={color} to="#000" />
     })
 }
 
@@ -257,14 +229,7 @@ export function LightShadesPantone() {
     .map((key) => {
       const color = pantone[key as keyof typeof pantone]
 
-      return (
-        <ColorShades
-          key={key}
-          name={key}
-          color={formatCss(color) ?? ""}
-          to="#fff"
-        />
-      )
+      return <ColorShades key={key} name={key} color={color} to="#fff" />
     })
 }
 
@@ -274,13 +239,6 @@ export function DarkShadesPantone() {
     .map((key) => {
       const color = pantone[key as keyof typeof pantone]
 
-      return (
-        <ColorShades
-          key={key}
-          name={key}
-          color={formatCss(color) ?? ""}
-          to="#000"
-        />
-      )
+      return <ColorShades key={key} name={key} color={color} to="#000" />
     })
 }
