@@ -30,7 +30,13 @@ function ColorShades({ name, end, start, config }: ColorShapeProps) {
   )
 }
 
-function ColorSpectrum({ name, start, config }: ColorShapeProps) {
+interface ColorSpectrumProps {
+  name: string
+  start: string
+  config?: ShadeConfig
+}
+
+function ColorSpectrum({ name, start, config }: ColorSpectrumProps) {
   const lighter = buildShades(start, "#000", config).reverse()
   const darker = buildShades(start, "#fff", config)
 
@@ -57,7 +63,7 @@ function ColorSpectrum({ name, start, config }: ColorShapeProps) {
 
 export interface ColorShadesFromPaletteProps {
   palette: ColorPalette
-  start: string
+  start?: string
 }
 
 function ColorShadesFromPalette({
@@ -93,6 +99,10 @@ export function LightShadesPantone() {
 
 export function DarkShadesPantone() {
   return <ColorShadesFromPalette palette={pantone} start="#000" />
+}
+
+export function RelatedShadesTailwind() {
+  return <ColorShadesFromPalette palette={tailwind} />
 }
 
 export function RelatedShadesPantone() {
