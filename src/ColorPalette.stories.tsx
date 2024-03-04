@@ -49,7 +49,7 @@ function Badge({ background, text, label }: BadgeProps) {
         fontFamily: "system-ui",
         lineHeight: "1.2",
         padding: "1rem",
-        width: "7.5rem",
+        width: "3rem",
         height: "1.5rem",
         backgroundColor: background,
         color: text,
@@ -94,7 +94,7 @@ interface ShadeConfig {
 }
 
 const defaultShadeConfig: ShadeConfig = {
-  steps: 7,
+  steps: 20,
   difference: 2,
   minLightness: 0.1,
   maxLightness: 0.99
