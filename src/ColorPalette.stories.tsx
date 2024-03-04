@@ -89,15 +89,11 @@ const differ = differenceCiede2000()
 interface ShadeConfig {
   steps: number
   difference: number
-  minLightness: number
-  maxLightness: number
 }
 
 const defaultShadeConfig: ShadeConfig = {
   steps: 20,
-  difference: 1,
-  minLightness: 0.1,
-  maxLightness: 0.99
+  difference: 1
 }
 
 function findNextShade(
@@ -117,11 +113,7 @@ function findNextShade(
     next = mixer(change)
     tries++
 
-    if (
-      differ(start, next) > config.difference &&
-      next.l >= config.minLightness &&
-      next.l <= config.maxLightness
-    ) {
+    if (differ(start, next) > config.difference) {
       return next
     }
   }
