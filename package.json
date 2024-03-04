@@ -38,27 +38,27 @@
   },
   "packageManager": "pnpm@8.13.1+sha256.9e5f62ce5f2b7d4ceb3c2848f41cf0b33032c24d683c7088b53f62b1885fb246",
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.6.6",
-    "@storybook/addon-interactions": "^7.6.6",
-    "@storybook/addon-links": "^7.6.6",
-    "@storybook/blocks": "^7.6.6",
-    "@storybook/react": "^7.6.6",
-    "@storybook/react-vite": "^7.6.6",
-    "@storybook/test": "^7.6.6",
-    "cspell": "^8.2.4",
-    "eslint": "^8.56.0",
-    "eslint-plugin-storybook": "^0.6.15",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "npm-check-updates": "^16.14.12",
-    "prettier": "^3.1.1",
+    "@storybook/addon-essentials": "^7.6.17",
+    "@storybook/addon-interactions": "^7.6.17",
+    "@storybook/addon-links": "^7.6.17",
+    "@storybook/blocks": "^7.6.17",
+    "@storybook/react": "^7.6.17",
+    "@storybook/react-vite": "^7.6.17",
+    "@storybook/test": "^7.6.17",
+    "cspell": "^8.5.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-storybook": "^0.8.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "npm-check-updates": "^16.14.15",
+    "prettier": "^3.2.5",
     "prettier-package-json": "^2.8.0",
     "rimraf": "^5.0.5",
-    "storybook": "^7.6.6",
+    "storybook": "^7.6.17",
     "typescript": "^5.3.3",
-    "@types/culori": "^2.0.4",
-    "@types/react": "^18.2.46",
-    "@types/react-dom": "^18.2.18"
+    "@types/culori": "^2.1.0",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19"
   },
   "eslintConfig": {
     "extends": [
@@ -66,7 +66,7 @@
     ]
   },
   "dependencies": {
-    "culori": "^3.3.0",
+    "culori": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
