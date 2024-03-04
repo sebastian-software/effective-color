@@ -1,7 +1,7 @@
 import type { Meta } from "@storybook/react"
 import { formatHex } from "culori"
 import { type FC } from "react"
-import { ColorPalette, apple, pantone, tailwind } from "../palettes"
+import { ColorPalette, apple, material14, pantone, tailwind } from "../palettes"
 import {
   ShadeConfig,
   SpectrumEntry,
@@ -47,6 +47,7 @@ function ColorSpectrum({ name, start, config }: ColorSpectrumProps) {
 
   return (
     <BadgeLayout>
+      <Badge backgroundColor={start} label={name} />
       {spectrum.map(({ id, value }: SpectrumEntry) => (
         <Badge key={id} backgroundColor={formatHex(value) ?? ""} label={id} />
       ))}
@@ -102,6 +103,14 @@ export function DarkShadesApple() {
   return <ColorShadesFromPalette palette={apple} start="#000" />
 }
 
+export function LightShadesMaterial() {
+  return <ColorShadesFromPalette palette={material14} start="#fff" />
+}
+
+export function DarkShadesMaterial() {
+  return <ColorShadesFromPalette palette={material14} start="#000" />
+}
+
 export function RelatedShadesTailwind() {
   return <ColorShadesFromPalette palette={tailwind} />
 }
@@ -112,4 +121,8 @@ export function RelatedShadesPantone() {
 
 export function RelatedShadesApple() {
   return <ColorShadesFromPalette palette={apple} />
+}
+
+export function RelatedShadesMaterial() {
+  return <ColorShadesFromPalette palette={material14} />
 }
