@@ -197,32 +197,90 @@ const tailwind = {
   rose: "#9f1239"
 }
 
-export function LightShades() {
-  return Object.keys(tailwind).map((key) => {
-    const color = tailwind[key as keyof typeof tailwind]
-
-    return (
-      <ColorShades
-        key={key}
-        name={key}
-        color={formatCss(color) ?? ""}
-        to="#fff"
-      />
-    )
-  })
+const pantone = {
+  "2024": "ffbe98", // Peach Fuzz
+  "2023": "#BB2649", // Viva Magenta
+  "2022": "#6667ab", // "Very Peri"
+  "2021a": "#F9E547", // "Iluminating"
+  "2021b": "#97999B", // "Ultimate Gray"
+  "2020": "#0f4c81", // "Classic Blue"
+  "2019": "#FF6F61", // "Living Coral"
+  "2018": "#5F4B8B", // "Ultra Violet"
+  "2017": "#88B04B", // "Greenery"
+  "2016a": "#F7CAC9", // "Rose Quartz"
+  "2016b": "#92A8D1", // "Serenity"
+  "2015": "#955251", // "Marsala"
+  "2014": "#B565A7", // "Radiant Orchid"
+  "2013": "#009B77", // "Emerald"
+  "2012": "#dd4124", // "Tangerine Tango"
+  "2011": "#d94f70", // "Honeysuckle"
+  "2010": "#45b8ac" // "Turquoise"
 }
 
-export function DarkShades() {
-  return Object.keys(tailwind).map((key) => {
-    const color = tailwind[key as keyof typeof tailwind]
+export function LightShadesTailwind() {
+  return Object.keys(tailwind)
+    .sort()
+    .map((key) => {
+      const color = tailwind[key as keyof typeof tailwind]
 
-    return (
-      <ColorShades
-        key={key}
-        name={key}
-        color={formatCss(color) ?? ""}
-        to="#000"
-      />
-    )
-  })
+      return (
+        <ColorShades
+          key={key}
+          name={key}
+          color={formatCss(color) ?? ""}
+          to="#fff"
+        />
+      )
+    })
+}
+
+export function DarkShadesTailwind() {
+  return Object.keys(tailwind)
+    .sort()
+    .map((key) => {
+      const color = tailwind[key as keyof typeof tailwind]
+
+      return (
+        <ColorShades
+          key={key}
+          name={key}
+          color={formatCss(color) ?? ""}
+          to="#000"
+        />
+      )
+    })
+}
+
+export function LightShadesPantone() {
+  return Object.keys(pantone)
+    .sort()
+    .map((key) => {
+      const color = pantone[key as keyof typeof pantone]
+
+      return (
+        <ColorShades
+          key={key}
+          name={key}
+          color={formatCss(color) ?? ""}
+          to="#fff"
+        />
+      )
+    })
+}
+
+export function DarkShadesPantone() {
+  return Object.keys(pantone)
+    .sort()
+    .map((key) => {
+      const color = pantone[key as keyof typeof pantone]
+
+      return (
+        <ColorShades
+          key={key}
+          name={key}
+          color={formatCss(color) ?? ""}
+          to="#000"
+        />
+      )
+    })
 }
