@@ -78,7 +78,7 @@ test("Shade: White to Black", () => {
 test("Shade: White to Black (3 Steps)", () => {
   expect(
     buildShades("#fff", "#000", {
-      steps: 3
+      colorSteps: 3
     })
   ).toMatchInlineSnapshot(`
     [
@@ -204,7 +204,12 @@ test("Spectrum: #000099", () => {
         "l": 0.14203398608353762,
         "mode": "oklab",
       },
-      "0": "#000099",
+      "0": {
+        "a": -0.022166607734433852,
+        "b": -0.2127592080618223,
+        "l": 0.3087043064116058,
+        "mode": "oklab",
+      },
     }
   `)
 })

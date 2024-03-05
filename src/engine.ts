@@ -1,4 +1,4 @@
-import { Oklab, differenceCie94, interpolate } from "culori"
+import { Color, Oklab, differenceCie94, interpolate, oklab } from "culori"
 
 // Choice of CIEDE94 for Color Palette Generation:
 // We've opted for the CIEDE94 color difference formula for generating our color palettes
@@ -14,22 +14,25 @@ import { Oklab, differenceCie94, interpolate } from "culori"
 const differ = differenceCie94()
 
 export interface ShadeConfig {
-  steps: number
-  difference: number
-  compensation: number
+  colorSteps: number
+  colorDifference: number
+  darkColorCompensation: number
+  mixerSteps: number
+  outputSpace: string
 }
 
 const defaultShadeConfig: ShadeConfig = {
-  steps: 5,
-  difference: 2,
-  compensation: 5
+  colorSteps: 5,
+  colorDifference: 2,
+  darkColorCompensation: 5,
+  mixerSteps: 0.001,
+  outputSpace: "oklch"
 }
 
-const MIXER_SPACE = "oklab"
 const MIXER_STEPS = 0.001
 
 export function findNextShade(
-  start: string | Oklab,
+  start: string | Color,
   end: string,
   config: ShadeConfig
 ) {
@@ -37,15 +40,17 @@ export function findNextShade(
     return
   }
 
-  const mixer = interpolate([start, end], MIXER_SPACE)
+  const mixer = interpolate([start, end], "oklab")
 
   let next
-  for (let change = MIXER_STEPS; change < 1; change += MIXER_STEPS) {
+  for (let change = MIXER_STEPS; change < 1; change += config.mixerSteps) {
     next = mixer(change)
 
     const diff = differ(start, next)
     const minDiff =
-      config.difference + Math.pow(config.compensation, 1 - next.l) - 1
+      config.colorDifference +
+      Math.pow(config.darkColorCompensation, 1 - next.l) -
+      1
 
     if (diff >= minDiff) {
       return next
@@ -54,14 +59,14 @@ export function findNextShade(
 }
 
 export function buildShades(
-  start: string,
+  start: string | Color,
   end: string,
   config: Partial<ShadeConfig> = {}
 ) {
   const merged = { ...defaultShadeConfig, ...config }
 
   const result = []
-  let current: Oklab | string = start
+  let current: Color | string = start
 
   for (let i = 0; i < 100; i++) {
     const next = findNextShade(current, end, merged)
@@ -72,7 +77,7 @@ export function buildShades(
       break
     }
 
-    if (result.length >= merged.steps) {
+    if (result.length >= merged.colorSteps) {
       break
     }
   }
@@ -80,7 +85,7 @@ export function buildShades(
   return result
 }
 
-export type ColorSpectrum = Record<string, Oklab | string>
+export type ColorSpectrum = Record<string, Oklab | string | undefined>
 
 export function buildSpectrum(
   start: string,
@@ -92,11 +97,11 @@ export function buildSpectrum(
   const darker = buildShades(start, "#fff", merged)
 
   const table: ColorSpectrum = {}
-  lighter.forEach((color: Oklab, index: number) => {
+  lighter.forEach((color, index) => {
     table[`-${index + 1}`] = color
   })
-  table["0"] = start
-  darker.forEach((color: Oklab, index: number) => {
+  table["0"] = oklab(start)
+  darker.forEach((color, index) => {
     table[`+${index + 1}`] = color
   })
 
@@ -105,7 +110,7 @@ export function buildSpectrum(
 
 export type SpectrumEntry = {
   id: string
-  value: string | Oklab
+  value: string | Color | undefined
 }
 
 export type SpectrumList = SpectrumEntry[]

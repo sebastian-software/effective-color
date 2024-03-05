@@ -12,9 +12,9 @@ This [npm package](https://www.npmjs.com/package/@effective/color) is a TypeScri
 
 ## Features
 
-- **Scientific Approach to Color Differentiation**: Instead of basic color manipulation, our library employs color mixing techniques in the _OKLab_ color space. It carefully adjusts the proportions of base colors to achieve perceptible changes in hue, saturation, or lightness, visible to the human eye, according to specific parameters.
-- **Rooted in Color Theory**: The methodology is informed by color theory, ensuring that the generated palettes are not only visually appealing but also consistent with human visual perception.
-- **TypeScript Support**: As a TypeScript library, it seamlessly integrates into your development workflow, enabling the direct implementation of complex color schemes in your projects without a graphical interface.
+- **Scientifically-Driven Color Mixing**: Utilizing the _OKLab_ color space, our library transcends basic color manipulation by embracing sophisticated color mixing techniques. By meticulously adjusting the proportions of base colors, we achieve nuanced changes in hue, saturation, and lightness that are perceptibly visible to the human eye. Our approach is deeply rooted in color theory, ensuring the palettes we generate are not only aesthetically pleasing but also in harmony with human visual perception, offering a refined blend of art and science in every palette.
+- **Modern Color Standards**: By incorporating the _OKLCH_ color model alongside the widely embraced P3 color space, our color palette generator sets a new benchmark in color design. _OKLCH_ is celebrated for its perceptual uniformity, which simplifies the process of making intuitive adjustments to hue, chroma, and lightness, facilitating the creation of balanced and harmonious palettes with ease. The _P3_ color space, renowned for its broader color gamut, enables the production of more vibrant, saturated, and true-to-life colors. This strategic combination guarantees your palettes will shine with unparalleled brilliance on the latest displays.
+- **TypeScript Compatibility**: Engineered as a TypeScript library, our solution is crafted to integrate seamlessly into your development ecosystem. It empowers developers to incorporate complex color schemes directly into projects, bypassing the need for a graphical interface. This feature ensures a smooth, efficient workflow, enabling the effortless application of advanced color science principles into your digital creations, blending functionality with creativity seamlessly.
 
 ## Demo
 
@@ -41,9 +41,18 @@ The `buildShades` function generates an array of color shades between two specif
 - **start**: `string` - The starting color in any CSS-compatible format.
 - **end**: `string` - The ending color in any CSS-compatible format.
 - **config**: `ShadeConfig` (optional) - An object specifying the configuration for shade generation, including:
-  - **steps**: `number` [default=`5`] - The number of color shades to generate
-  - **difference**: `number` [default=`2`] - The perceptual difference between consecutive shades. A higher value results in more distinct shades.
-  - **compensation**: `number` [default=`5`] - A factor to adjust the progression curve of the color transition for very dark colors.
+
+  - **colorSteps**: `number` [default=`5`] - The number of color shades to generate
+  - **colorDifference**: `number` [default=`2`] - The perceptual difference between consecutive shades. A higher value results in more distinct shades.
+  - **darkColorCompensation**: `number` [default=`5`] - A factor to adjust the progression curve of the color transition for very dark colors.
+  - **mixerSteps**: `number` [default=`0.001`] - Internal step value used for reaching the target color difference. Smaller numbers increase precision but also runtime.
+  - **outputSpace**: `string` [default=`oklch`] - Any supported output space by Culori.
+
+  colorSteps: 5,
+  colorDifference: 2,
+  darkColorCompensation: 5,
+  mixerSteps: 0.001,
+  outputSpace: "oklch"
 
 #### Returns:
 

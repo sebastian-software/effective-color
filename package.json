@@ -4,6 +4,7 @@
   "description": "Color Palette Generator based on Human Perception",
   "main": "index.js",
   "scripts": {
+    "check": "tsc --noEmit",
     "clean:dist": "git clean -fXd",
     "build": "rimraf dist && tsc --project tsconfig.build.json",
     "prepare": "npm run build",
