@@ -7,6 +7,7 @@ import {
   converter,
   differenceCie94,
   formatCss,
+  getMode,
   interpolate,
   oklab
 } from "culori"
@@ -91,7 +92,8 @@ export function convertToOutputFormat(
     return ""
   }
 
-  const raw = toOutputFormat(clampChroma(color, merged.outputGamut))
+  // Clamp color to the output gamut
+  const raw = toOutputFormat(clampChroma(color, color.mode, merged.outputGamut))
 
   // FIXME: Try finding a smarter solution for getting correct types on Object.keys loop
   const numberObject = raw as any as Record<string, number>
@@ -118,10 +120,10 @@ export function buildShades(
   start: ColorValue,
   end: string,
   config: Partial<ShadeConfig> = {}
-) {
+): Array<string | Color> {
   const merged = { ...defaultShadeConfig, ...config }
 
-  const result = []
+  const result: Array<string | Color> = []
   let current: ColorValue = start
 
   for (let i = 0; i < 100; i++) {
@@ -141,7 +143,7 @@ export function buildShades(
   return result
 }
 
-export type ColorSpectrum = Record<string, ColorValue>
+export type ColorSpectrum = Record<string, string | Color>
 
 export function buildSpectrum(
   start: ColorValue,

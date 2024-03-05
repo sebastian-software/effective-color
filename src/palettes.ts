@@ -78,3 +78,10 @@ export const material14: ColorPalette = {
   grey: "#9e9e9e",
   blueGrey: "#607d8b"
 }
+
+export const shiny: ColorPalette = {
+  pink: "oklch(75.44% 0.257 0)",
+  orange: "oklab(75.44% 0.16 0.17)",
+  green: "oklch(75.44% 0.363 156.71)",
+  blue: "oklch(75.44% 0.257 202.24)"
+}
