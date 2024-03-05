@@ -39,6 +39,11 @@ The `buildShades` function generates an array of color shades between two specif
 
 - An array of `Oklab` objects representing the generated shades between the start and end colors.
 
+#### Visual Example
+
+![Light Shades](docs/light-shades.png)
+![Dark Shades](docs/dark-shades.png)
+
 ### `buildSpectrum()`
 
 The `buildSpectrum` function creates a color spectrum based on a starting color and configuration, allowing for the creation of a wide range of colors derived from a single base. This can be particularly useful for generating thematic color sets or for applications requiring a consistent but varied set of colors.
@@ -51,6 +56,10 @@ The `buildSpectrum` function creates a color spectrum based on a starting color 
 #### Returns:
 
 - A `ColorSpectrum` object, which is a record of color identifiers mapped to their corresponding color values in either `Oklab` or `string` format. This structure facilitates easy access and manipulation of the color spectrum.
+
+#### Visual Example
+
+![Light Shades](docs/spectrum.png)
 
 ### `spectrumToList()`
 
