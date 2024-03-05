@@ -1,11 +1,9 @@
-import { converter } from "culori"
+import { lab } from "culori"
 
 interface BadgeProps {
   backgroundColor: string
   label?: string
 }
-
-const lab = converter("lab")
 
 export function Badge({ backgroundColor, label }: BadgeProps) {
   const parsedColor = lab(backgroundColor)

@@ -1,10 +1,20 @@
 # Effective/Color
 
-This npm package is a TypeScript library designed for developers and designers to create sophisticated color palettes, similar to those seen in Tailwind CSS or Material Design systems. Unlike simpler tools that adjust colors by adding white or black or merely tweaking brightness and chroma, this library utilizes a scientifically based approach for color differentiation.
+[![Sponsored by][sponsor-img]][sponsor] [![Version][npm-version-img]][npm] [![Downloads][npm-downloads-img]][npm] [![Build Status][github-img]][github]
+
+[sponsor]: https://www.sebastian-software.de
+[sponsor-img]: https://badgen.net/badge/Sponsored%20by/Sebastian%20Software/c41e54
+[npm]: https://www.npmjs.com/package/@effective/color
+[npm-downloads-img]: https://badgen.net/npm/dm/@effective/color
+[npm-version-img]: https://badgen.net/npm/v/@effective/color
+[github]: https://github.com/sebastian-software/effective-color/actions
+[github-img]: https://badgen.net/github/status/sebastian-software/effective-color?label=tests&icon=github
+
+This [npm package](https://www.npmjs.com/package/@effective/color) is a TypeScript library designed for developers and designers to create sophisticated color palettes, similar to those seen in Tailwind CSS or Material Design systems. Unlike simpler tools that adjust colors by adding white or black or merely tweaking brightness and chroma, this library utilizes a scientifically based approach for color differentiation (CIEDE94).
 
 ## Features
 
-- **Scientific Approach to Color Differentiation**: Instead of basic color manipulation, our library employs color mixing techniques. It carefully adjusts the proportions of base colors to achieve perceptible changes in hue, saturation, or lightness, visible to the human eye, according to specific parameters.
+- **Scientific Approach to Color Differentiation**: Instead of basic color manipulation, our library employs color mixing techniques in the _OKLab_ color space. It carefully adjusts the proportions of base colors to achieve perceptible changes in hue, saturation, or lightness, visible to the human eye, according to specific parameters.
 - **Rooted in Color Theory**: The methodology is informed by color theory, ensuring that the generated palettes are not only visually appealing but also consistent with human visual perception.
 - **TypeScript Support**: As a TypeScript library, it seamlessly integrates into your development workflow, enabling the direct implementation of complex color schemes in your projects without a graphical interface.
 
@@ -20,11 +30,13 @@ To begin using this library in your projects, simply add it to your project usin
 npm install @effective/color
 ```
 
+The library uses [culori](https://culorijs.org/) internally. Therefor all conversion methods from the library can be used to translate the resulting colors into the desired format e.g. [`formatCss()`](https://culorijs.org/api/#formatCss). Note: Using `formatHex` will clamp the values to the SRGB spectrum.
+
 ## API
 
 ### `buildShades()`
 
-The `buildShades` function generates an array of color shades between two specified colors in the Oklab color space. This function allows for the creation of smooth color stops from one color to another, which is primary meant for very light and very dark shades for one base color.
+The `buildShades` function generates an array of color shades between two specified colors in the _Oklab_ color space. This function allows for the creation of smooth color stops from one color to another, which is primary meant for very light and very dark shades for one base color.
 
 #### Parameters:
 

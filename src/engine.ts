@@ -25,6 +25,9 @@ const defaultShadeConfig: ShadeConfig = {
   compensation: 5
 }
 
+const MIXER_SPACE = "oklab"
+const MIXER_STEPS = 0.001
+
 function findNextShade(
   start: string | Oklab,
   end: string,
@@ -34,10 +37,10 @@ function findNextShade(
     return
   }
 
-  const mixer = interpolate([start, end], "oklab")
+  const mixer = interpolate([start, end], MIXER_SPACE)
 
   let next
-  for (let change = 0.001; change < 1; change += 0.001) {
+  for (let change = MIXER_STEPS; change < 1; change += MIXER_STEPS) {
     next = mixer(change)
 
     const diff = differ(start, next)
