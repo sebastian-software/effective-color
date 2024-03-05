@@ -1,6 +1,6 @@
 {
   "name": "@effective/color",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Color Palette Generator based on Human Perception",
   "main": "index.js",
   "scripts": {
