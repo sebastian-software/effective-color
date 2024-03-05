@@ -28,7 +28,7 @@ const defaultShadeConfig: ShadeConfig = {
 const MIXER_SPACE = "oklab"
 const MIXER_STEPS = 0.001
 
-function findNextShade(
+export function findNextShade(
   start: string | Oklab,
   end: string,
   config: ShadeConfig
@@ -56,13 +56,15 @@ function findNextShade(
 export function buildShades(
   start: string,
   end: string,
-  config: ShadeConfig = defaultShadeConfig
+  config: Partial<ShadeConfig> = {}
 ) {
+  const merged = { ...defaultShadeConfig, ...config }
+
   const result = []
   let current: Oklab | string = start
 
   for (let i = 0; i < 100; i++) {
-    const next = findNextShade(current, end, config)
+    const next = findNextShade(current, end, merged)
     if (next) {
       result.push(next)
       current = next
@@ -70,7 +72,7 @@ export function buildShades(
       break
     }
 
-    if (result.length >= config.steps) {
+    if (result.length >= merged.steps) {
       break
     }
   }
@@ -82,10 +84,12 @@ export type ColorSpectrum = Record<string, Oklab | string>
 
 export function buildSpectrum(
   start: string,
-  config: ShadeConfig = defaultShadeConfig
+  config: Partial<ShadeConfig> = {}
 ): ColorSpectrum {
-  const lighter = buildShades(start, "#000", config)
-  const darker = buildShades(start, "#fff", config)
+  const merged = { ...defaultShadeConfig, ...config }
+
+  const lighter = buildShades(start, "#000", merged)
+  const darker = buildShades(start, "#fff", merged)
 
   const table: ColorSpectrum = {}
   lighter.forEach((color: Oklab, index: number) => {
