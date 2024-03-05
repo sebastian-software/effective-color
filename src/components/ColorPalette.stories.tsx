@@ -30,7 +30,7 @@ function ColorShades({ name, end, start, config }: ColorShapeProps) {
     <BadgeLayout>
       <Badge backgroundColor={end ?? "white"} label={name} />
       {buildShades(start, end, config).map((shade, index) => (
-        <Badge key={index} backgroundColor={formatHex(shade)} />
+        <Badge key={index} backgroundColor={shade as string} />
       ))}
     </BadgeLayout>
   )

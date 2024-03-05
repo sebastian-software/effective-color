@@ -49,12 +49,8 @@ The `buildShades` function generates an array of color shades between two specif
   - **darkColorCompensation**: `number` [default=`5`] - A factor to adjust the progression curve of the color transition for very dark colors.
   - **mixerSteps**: `number` [default=`0.001`] - Internal step value used for reaching the target color difference. Smaller numbers increase precision but also runtime.
   - **outputSpace**: `string` [default=`oklch`] - Any supported output space by Culori.
-
-  colorSteps: 5,
-  colorDifference: 2,
-  darkColorCompensation: 5,
-  mixerSteps: 0.001,
-  outputSpace: "oklch"
+  - **outputGamut**: `string` [default=`p3`] - Any supported gamut space by Culori (`rgb`, `p3`, ...)
+  - **outputCSS**: `boolean` [default=`true`] - Whether CSS formatted values should be outputted
 
 #### Returns:
 

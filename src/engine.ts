@@ -1,10 +1,12 @@
 import {
   Color,
   Gamut,
+  Mode,
   Oklab,
   clampChroma,
   converter,
   differenceCie94,
+  formatCss,
   interpolate,
   oklab
 } from "culori"
@@ -29,6 +31,8 @@ export interface ShadeConfig {
   mixerSteps: number
   outputSpace: Color["mode"]
   outputGamut: Gamut["mode"]
+  outputCSS: boolean
+  outputPrecision: number
 }
 
 const defaultShadeConfig: ShadeConfig = {
@@ -37,24 +41,28 @@ const defaultShadeConfig: ShadeConfig = {
   darkColorCompensation: 5,
   mixerSteps: 0.001,
   outputSpace: "oklch",
-  outputGamut: "p3"
+  outputGamut: "p3",
+  outputCSS: true,
+  outputPrecision: 3
 }
 
-const MIXER_STEPS = 0.001
-
 export function findNextShade(
-  start: string | Color,
+  start: ColorValue,
   end: string,
   config: ShadeConfig
 ) {
-  if (differ(start, end) < 0.1) {
+  if (start == null || differ(start, end) < 0.1) {
     return
   }
 
   const mixer = interpolate([start, end], "oklab")
 
   let next
-  for (let change = MIXER_STEPS; change < 1; change += config.mixerSteps) {
+  for (
+    let change = config.mixerSteps;
+    change < 1;
+    change += config.mixerSteps
+  ) {
     next = mixer(change)
 
     const diff = differ(start, next)
@@ -70,7 +78,7 @@ export function findNextShade(
 }
 
 export function convertToOutputFormat(
-  color: Color,
+  color: Color | undefined,
   config: Partial<ShadeConfig> = {}
 ) {
   const merged = { ...defaultShadeConfig, ...config }
@@ -78,23 +86,48 @@ export function convertToOutputFormat(
   // FIXME: use toGamut instead of clampChroma but this is missing in TS definitions right now.
 
   const toOutputFormat = converter(merged.outputSpace)
-  return toOutputFormat(clampChroma(color, merged.outputGamut))
+
+  if (!color) {
+    return ""
+  }
+
+  const raw = toOutputFormat(clampChroma(color, merged.outputGamut))
+
+  // FIXME: Try finding a smarter solution for getting correct types on Object.keys loop
+  const numberObject = raw as any as Record<string, number>
+  if (merged.outputPrecision != null) {
+    Object.keys(numberObject).forEach((key) => {
+      if (typeof numberObject[key] === "number") {
+        numberObject[key] = parseFloat(
+          numberObject[key].toFixed(merged.outputPrecision)
+        )
+      }
+    })
+  }
+
+  if (merged.outputCSS) {
+    return formatCss(raw)
+  }
+
+  return raw
 }
 
+export type ColorValue = string | Color | undefined
+
 export function buildShades(
-  start: string | Color,
+  start: ColorValue,
   end: string,
   config: Partial<ShadeConfig> = {}
 ) {
   const merged = { ...defaultShadeConfig, ...config }
 
   const result = []
-  let current: Color | string = start
+  let current: ColorValue = start
 
   for (let i = 0; i < 100; i++) {
     const next = findNextShade(current, end, merged)
     if (next) {
-      result.push(next)
+      result.push(convertToOutputFormat(next))
       current = next
     } else {
       break
@@ -108,22 +141,24 @@ export function buildShades(
   return result
 }
 
-export type ColorSpectrum = Record<string, Oklab | string | undefined>
+export type ColorSpectrum = Record<string, ColorValue>
 
 export function buildSpectrum(
-  start: string,
+  start: ColorValue,
   config: Partial<ShadeConfig> = {}
 ): ColorSpectrum {
   const merged = { ...defaultShadeConfig, ...config }
 
-  const lighter = buildShades(start, "#000", merged)
-  const darker = buildShades(start, "#fff", merged)
+  const parsed = oklab(start)
+
+  const lighter = buildShades(parsed, "#000", merged)
+  const darker = buildShades(parsed, "#fff", merged)
 
   const table: ColorSpectrum = {}
   lighter.forEach((color, index) => {
     table[`-${index + 1}`] = color
   })
-  table["0"] = oklab(start)
+  table["0"] = convertToOutputFormat(parsed)
   darker.forEach((color, index) => {
     table[`+${index + 1}`] = color
   })
