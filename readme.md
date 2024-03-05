@@ -1,14 +1,12 @@
 # Effective/Color
 
-[![Sponsored by][sponsor-img]][sponsor] [![Version][npm-version-img]][npm] [![Downloads][npm-downloads-img]][npm] [![Build Status][github-img]][github]
+[![Sponsored by][sponsor-img]][sponsor] [![Version][npm-version-img]][npm] [![Downloads][npm-downloads-img]][npm]
 
 [sponsor]: https://www.sebastian-software.de
 [sponsor-img]: https://badgen.net/badge/Sponsored%20by/Sebastian%20Software/c41e54
 [npm]: https://www.npmjs.com/package/@effective/color
 [npm-downloads-img]: https://badgen.net/npm/dm/@effective/color
 [npm-version-img]: https://badgen.net/npm/v/@effective/color
-[github]: https://github.com/sebastian-software/effective-color/actions
-[github-img]: https://badgen.net/github/status/sebastian-software/effective-color?label=tests&icon=github
 
 This [npm package](https://www.npmjs.com/package/@effective/color) is a TypeScript library designed for developers and designers to create sophisticated color palettes, similar to those seen in Tailwind CSS or Material Design systems. Unlike simpler tools that adjust colors by adding white or black or merely tweaking brightness and chroma, this library utilizes a scientifically based approach for color differentiation (CIEDE94).
 
