@@ -8,7 +8,11 @@
 [npm-downloads-img]: https://badgen.net/npm/dm/@effective/color
 [npm-version-img]: https://badgen.net/npm/v/@effective/color
 
-This [npm package](https://www.npmjs.com/package/@effective/color) is a TypeScript library designed for developers and designers to create sophisticated color palettes, similar to those seen in Tailwind CSS or Material Design systems. Unlike simpler tools that adjust colors by adding white or black or merely tweaking brightness and chroma, this library utilizes a scientifically based approach for color differentiation (CIEDE94).
+This [npm package](https://www.npmjs.com/package/@effective/color) is a TypeScript library designed for developers and designers to create sophisticated color palettes, similar to those seen in _Tailwind CSS_ or _Material Design_ systems. Unlike simpler tools that adjust colors by adding white or black or merely tweaking brightness and chroma, this library utilizes a scientifically based approach for color differentiation (_CIEDE94_).
+
+This library is based on the wonderful [Culori] library:
+
+> Culori is a JavaScript color library that supports the conversion and manipulation of all formats defined in the CSS Colors Level 4 specification, plus additional color spaces. It handles color differences, interpolation, gradients, blend modes and much more.
 
 ## Features
 
@@ -27,8 +31,6 @@ To begin using this library in your projects, simply add it to your project usin
 ```bash
 npm install @effective/color
 ```
-
-The library uses [culori](https://culorijs.org/) internally. Therefor all conversion methods from the library can be used to translate the resulting colors into the desired format e.g. [`formatCss()`](https://culorijs.org/api/#formatCss). Note: Using `formatHex` will clamp the values to the SRGB spectrum.
 
 ## API
 
@@ -93,11 +95,6 @@ The `spectrumToList` function converts a `ColorSpectrum` object into a list form
 - A `SpectrumList`, which is an array of `SpectrumEntry` objects, each containing:
   - **id**: `string` - The identifier of the color, serving as a key or label.
   - **value**: `string | Oklab` - The color value, which can be either a CSS-compatible string or an Oklab object.
-
-## General Notes
-
-- The use of the Oklab color space provides a more perceptually uniform color progression compared to traditional color spaces like RGB or HSL, making these functions particularly suitable for applications where color accuracy and perception are critical.
-- Optional configuration in these functions allows for flexibility and fine-tuning of color generation, accommodating a wide range of use cases from subtle gradients to vibrant spectrums.
 
 ## License
 
