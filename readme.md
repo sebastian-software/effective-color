@@ -10,7 +10,7 @@
 
 This [npm package](https://www.npmjs.com/package/@effective/color) is a TypeScript library designed for developers and designers to create sophisticated color palettes, similar to those seen in _Tailwind CSS_ or _Material Design_ systems. Unlike simpler tools that adjust colors by adding white or black or merely tweaking brightness and chroma, this library utilizes a scientifically based approach for color differentiation (_CIEDE94_).
 
-This library is based on the wonderful [Culori] library:
+This library is based on the wonderful [Culori](https://culorijs.org/) library:
 
 > Culori is a JavaScript color library that supports the conversion and manipulation of all formats defined in the CSS Colors Level 4 specification, plus additional color spaces. It handles color differences, interpolation, gradients, blend modes and much more.
 
