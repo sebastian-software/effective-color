@@ -1,4 +1,13 @@
-import { Color, Oklab, differenceCie94, interpolate, oklab } from "culori"
+import {
+  Color,
+  Gamut,
+  Oklab,
+  clampChroma,
+  converter,
+  differenceCie94,
+  interpolate,
+  oklab
+} from "culori"
 
 // Choice of CIEDE94 for Color Palette Generation:
 // We've opted for the CIEDE94 color difference formula for generating our color palettes
@@ -18,7 +27,8 @@ export interface ShadeConfig {
   colorDifference: number
   darkColorCompensation: number
   mixerSteps: number
-  outputSpace: string
+  outputSpace: Color["mode"]
+  outputGamut: Gamut["mode"]
 }
 
 const defaultShadeConfig: ShadeConfig = {
@@ -26,7 +36,8 @@ const defaultShadeConfig: ShadeConfig = {
   colorDifference: 2,
   darkColorCompensation: 5,
   mixerSteps: 0.001,
-  outputSpace: "oklch"
+  outputSpace: "oklch",
+  outputGamut: "p3"
 }
 
 const MIXER_STEPS = 0.001
@@ -56,6 +67,18 @@ export function findNextShade(
       return next
     }
   }
+}
+
+export function convertToOutputFormat(
+  color: Color,
+  config: Partial<ShadeConfig> = {}
+) {
+  const merged = { ...defaultShadeConfig, ...config }
+
+  // FIXME: use toGamut instead of clampChroma but this is missing in TS definitions right now.
+
+  const toOutputFormat = converter(merged.outputSpace)
+  return toOutputFormat(clampChroma(color, merged.outputGamut))
 }
 
 export function buildShades(
