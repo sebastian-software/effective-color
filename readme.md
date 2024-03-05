@@ -31,9 +31,9 @@ The `buildShades` function generates an array of color shades between two specif
 - **start**: `string` - The starting color in any CSS-compatible format.
 - **end**: `string` - The ending color in any CSS-compatible format.
 - **config**: `ShadeConfig` (optional) - An object specifying the configuration for shade generation, including:
-  - **steps**: `number` - The number of color shades to generate
-  - **difference**: `number` - The perceptual difference between consecutive shades. A higher value results in more distinct shades.
-  - **compensation**: `number` - A factor to adjust the progression curve of the color transition for very dark colors, allowing for more nuanced control over the result.
+  - **steps**: `number` [default=`5`] - The number of color shades to generate
+  - **difference**: `number` [default=`2`] - The perceptual difference between consecutive shades. A higher value results in more distinct shades.
+  - **compensation**: `number` [default=`5`] - A factor to adjust the progression curve of the color transition for very dark colors.
 
 #### Returns:
 
