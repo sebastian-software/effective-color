@@ -2,7 +2,9 @@
   "name": "@effective/color",
   "version": "1.0.0",
   "description": "Color Palette Generator based on Human Perception",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
   "scripts": {
     "check": "tsc --noEmit",
     "clean:dist": "git clean -fXd",
