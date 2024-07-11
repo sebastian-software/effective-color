@@ -85,3 +85,10 @@ export const shiny: ColorPalette = {
   green: "oklch(75.44% 0.363 156.71)",
   blue: "oklch(75.44% 0.257 202.24)"
 }
+
+export const sebastian: ColorPalette = {
+  lila: "#3F2B3D",
+  gold: "#C89F6B",
+  petrol: "#22404B",
+  magenta: "#BB2649"
+}

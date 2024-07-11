@@ -6,6 +6,7 @@ import {
   material14,
   pantone,
   shiny,
+  sebastian,
   tailwind
 } from "../palettes"
 import {
@@ -143,4 +144,16 @@ export function RelatedShadesMaterial() {
 
 export function RelatedShadesShiny() {
   return <ColorShadesFromPalette palette={shiny} />
+}
+
+export function RelatedShadesSebastianSoftware() {
+  return <ColorShadesFromPalette palette={sebastian} />
+}
+
+export function LightShadesSebastian() {
+  return <ColorShadesFromPalette palette={sebastian} start="#fff" />
+}
+
+export function DarkShadesSebastian() {
+  return <ColorShadesFromPalette palette={sebastian} start="#000" />
 }
