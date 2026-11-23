@@ -1,6 +1,6 @@
 # Effective/Color
 
-[![Sponsored by][sponsor-img]][sponsor] [![Version][npm-version-img]][npm] [![Downloads][npm-downloads-img]][npm]
+[![Sponsored by][sponsor-img]][sponsor] [![Version][npm-version-img]][npm] [![Downloads][npm-downloads-img]][npm] [![Node.js test matrix 22, 24, and 26](https://img.shields.io/badge/Node.js-22%20%7C%2024%20%7C%2026-339933?logo=nodedotjs&logoColor=white)](https://github.com/sebastian-software/effective-color/actions/workflows/ci.yml)
 
 [sponsor]: https://www.sebastian-software.de
 [sponsor-img]: https://badgen.net/badge/Sponsored%20by/Sebastian%20Software/c41e54
